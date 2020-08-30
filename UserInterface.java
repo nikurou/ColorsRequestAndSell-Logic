@@ -20,10 +20,7 @@ public class UserInterface {
 
             choice = kb.nextInt();
             kb.nextLine();
-            System.out.println("bbbbb");
-            
             executeChoice(choice);
-            System.out.println("aaaaaaa");
         }
     }
 
@@ -35,7 +32,7 @@ public class UserInterface {
             b1.promptOrder();
             // Now b1 contains the order's details. Let's push it to rq_db
             // but first, let's check if their request is already on the markt
-
+            checkMarket(b1); 
             
         } else if (choice == 2) { // seller
             Seller s1 = new Seller();
@@ -50,8 +47,9 @@ public class UserInterface {
         }
     }
 
-    private boolean checkMarket(Buyer b1) {
+    private void checkMarket(Buyer b1) {
 
+        Scanner kb = new Scanner(System.in);
         int[] clientRGB = b1.getRGBArray();
         int offset = b1.getRangeOfError();
 
@@ -68,8 +66,21 @@ public class UserInterface {
             }
         }
 
-        System.out.println("");
-        return false;
+        if(acceptableItems.size() >= 1){
+            System.out.println("We have found items matching your criteria from the following sellers: ");
 
+            for(Seller i: acceptableItems){
+                System.out.println("Name: " + i.name + "HexCode: " + i.hexCode + "RGB = (" + i.rgbArray[0] +", " + i.rgbArray[1] + ", " + i.rgbArray[2] + ")" );
+            }
+            
+            System.out.println("Would you like to proceed with your order anyways? [Y/N]: ");
+            if(kb.nextLine().equals("Y")){
+                rq_db.add(b1);
+                System.out.println("Sucessfully added your order to the rq_db");
+            }
+            else{
+                System.out.println("Your order was not placed.");
+            }
+        }
     }
 }
