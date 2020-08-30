@@ -3,9 +3,10 @@ import java.util.Scanner;
 public class Buyer {
 
     String name;
-    String rgb;
+    int[] rgbArray; 
     int rangeOfError;
     int quantity;
+    String hexCode;
 
     // In the final project all this input and error checking will be handled by the
     // UI component.
@@ -17,52 +18,19 @@ public class Buyer {
         // In the final project, you will have the option to give HEX instead too, but
         // let's assume user always enters RGB for simplicity during this prototype.
         System.out.print("Please enter the RGB of the item you would like to order (r,g,b): ");
-        this.rgb = kb.nextLine();
+        String rgb = kb.nextLine();
         System.out.print("Please define a range of error or enter 0 for exact: ");
         this.rangeOfError = kb.nextInt();
         System.out.print("Please enter the quantity you'd like to order: ");
         this.quantity = kb.nextInt();
+        
+        // Take information given and perform parse and conversion to get needed data.
+        this.rgbArray = parseRGBString(rgb);
+        this.hexCode = convertToHex(rgbArray);
 
-        placeOrder(name, rgb, rangeOfError, quantity);
-        kb.close();
+       
     }
 
-    private void placeOrder(String name, String rgb, int rangeOfError, int quantity) {
-        int[] rgbArray = parseRGBString(rgb);
-        String hexCode = convertToHex(rgbArray);
-
-        // Is the customer's requested order already in the market?
-        if (checkMarket(hexCode, rangeOfError, rgbArray) == true) {
-            // if so, notify the user and ask if they wish to proceed with order anyways.
-            System.out.println(
-                    "We found your requested dye or similar already listed on the marketplace from the following listings.....Would you like to place your order anyways?");
-        } else {
-            // Else proceed with their order.
-        }
-    }
-
-    private boolean checkMarket(String hexCode, int rangeOfError, int[] rgbArray) {
-        if (rangeOfError != 0) {
-            int r = rgbArray[0];
-            int g = rgbArray[1];
-            int b = rgbArray[2];
-
-            for (int i = 0; i < rangeOfError; i++) {
-                for (int j = 0; j < rangeOfError; i++) {
-                    int offsetR = i;
-                    int offsetG = g;
-                    int offsetB = rangeOfError - i - g;
-
-                    //If they are valid offsets (if added, does not exceed 255)
-                    if( r + offsetR <= 255 && g + offsetG <= 255 && b + offsetB <= 255){
-                       //scramble the array to get all combinations of r , g, b
-
-                    }
-                }
-            }
-        }
-        return false;
-    }
 
     // given in the form "0-255,0-255,0-255", take each thing into an array
     private int[] parseRGBString(String rgb) {
@@ -74,7 +42,6 @@ public class Buyer {
             parsedRGB[i] = Integer.parseInt(parsedRGBString[i]);
             System.out.println("RGB = " + parsedRGB[i]);
         }
-
         return parsedRGB;
     }
 
@@ -88,8 +55,18 @@ public class Buyer {
             hex += Integer.toHexString(firstDecimal);
             hex += Integer.toHexString(secondDecimal);
         }
-        System.out.println("HEX: " + hex);
+        System.out.println("HEX: #" + hex);
         return hex;
     }
+    
+    public int[] getRGBArray(){
+        return this.rgbArray;
+    }
+
+
+	public int getRangeOfError() {
+		return this.rangeOfError;
+	}
 }
+
 
