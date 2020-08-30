@@ -29,7 +29,6 @@ public class UserInterface {
         } else if(choice == 3){
             Buyer b1 = new Buyer();
             b1.convertToHex(new int []{220,20,60});
-
         } 
         else{
             System.out.println("try again with valid input.");
