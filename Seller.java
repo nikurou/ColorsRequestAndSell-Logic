@@ -6,6 +6,7 @@ public class Seller {
     String hexCode;
     int quantity;
     int[] rgbArray;
+    int price;
 
 	public void promptSellOrder() {
         Scanner kb = new Scanner(System.in);
@@ -14,6 +15,9 @@ public class Seller {
        
         System.out.print("Please enter the RGB of the item you would like to sell (r,g,b): ");
         String rgb = kb.nextLine();
+
+        System.out.print("Please enter the price you'd like to list each item (if multiple) on the marketplace: ");
+        this.price = kb.nextInt();
         
         System.out.print("Please enter the quantity you'd like to place on the marketplace: ");
         this.quantity = kb.nextInt();
