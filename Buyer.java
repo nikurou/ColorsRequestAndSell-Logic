@@ -27,10 +27,7 @@ public class Buyer {
         // Take information given and perform parse and conversion to get needed data.
         this.rgbArray = parseRGBString(rgb);
         this.hexCode = convertToHex(rgbArray);
-
-       
     }
-
 
     // given in the form "0-255,0-255,0-255", take each thing into an array
     private int[] parseRGBString(String rgb) {
