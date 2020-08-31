@@ -39,11 +39,35 @@ public class UserInterface {
             s1.promptSellOrder();
             // Now s1 contains the item details, let's push it mrkt_db
             mrkt_db.add(s1);
+            // Find any users that want this dye, and notify them.
+            checkAndNotifyRQ(s1); 
         } else if (choice == 3) {
             System.out.println("Exited!");
         } else {
             System.out.println("try again with valid input.");
             UI_Print();
+        }
+    }
+
+    // Called whenever a dye is added to the mrkt_db.
+    // Check if the dye is desired by any customers, and notify the customer a day they're interested in is out
+    private void checkAndNotifyRQ(Seller s1) {
+        Scanner kb = new Scanner(System.in);
+        int[] sellerRGB = s1.getRGBArray();
+
+
+        for(Buyer i: rq_db){
+            int[] clientRGB = i.getRGBArray();
+            int offset = i.getRangeOfError();
+            int difference = Math.abs(clientRGB[0] - sellerRGB[0]) +  
+                             Math.abs(clientRGB[1] - sellerRGB[1]) + 
+                             Math.abs(clientRGB[2] - sellerRGB[2]);
+
+            if( difference <= offset){
+                //Code or function to send notification to potential buyer.
+                System.out.println("Notified customer " + i.name + " that an item they want is on sale.");
+            }                  
+            
         }
     }
 
@@ -70,9 +94,9 @@ public class UserInterface {
             System.out.println("We have found items matching your criteria from the following sellers: ");
 
             for(Seller i: acceptableItems){
-                System.out.println("Name: " + i.name + "HexCode: " + i.hexCode + "RGB = (" + i.rgbArray[0] +", " + i.rgbArray[1] + ", " + i.rgbArray[2] + ")" );
+                System.out.println("Name: " + i.name + "HexCode: " + i.hexCode + "RGB = (" + i.rgbArray[0] +", " + i.rgbArray[1] + ", " + i.rgbArray[2] + ") Price: " + i.price);
             }
-            
+    
             System.out.println("Would you like to proceed with your order anyways? [Y/N]: ");
             if(kb.nextLine().equals("Y")){
                 rq_db.add(b1);
